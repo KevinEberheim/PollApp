@@ -1,0 +1,31 @@
+:host { display: block; }
+
+.item {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 16px;
+  background: var(--card-dark);
+  border-radius: 8px 24px 8px 8px;
+  animation: fade-in 0.4s ease both;
+  transition: transform 0.2s ease;
+
+  &:hover { transform: translateY(-2px); }
+}
+
+.category { font-size: var(--fs-category); color: var(--orange-primary); }
+h3 { font-size: var(--fs-title); }
+
+.tag {
+  align-self: flex-end;
+  padding: 2px 8px;
+  border-radius: 8px;
+  font-size: var(--fs-text);
+  background: var(--orange-secondary);
+  color: var(--text-dark);
+}
+
+@keyframes fade-in {
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: none; }
+}

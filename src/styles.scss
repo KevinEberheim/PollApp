@@ -1,1 +1,56 @@
-/* You can add global styles to this file, and also import other style files */
+@font-face {
+    font-family: 'Nerko One';
+    src: url('/fonts/NerkoOne-Regular.ttf') format('truetype');
+    font-weight: 400;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Mulish';
+    src: url('/fonts/Mulish-VariableFont_wght.ttf') format('truetype');
+    font-weight: 200 1000;
+}
+
+:root {
+    --bg: #35273a;
+    --orange-primary: #ffb770;
+    --orange-secondary: #ffcfa1;
+    --card-light: #faf5fe;
+    --card-dark: #d9d9d914;
+    --white: #ffffff;
+    --font-heading: 'Nerko One', cursive;
+    --font-text: 'Mulish', sans-serif;
+    --tab-inactive: #fee9d4;
+    --text-dark: #35273a;
+    --fs-category: 16px;
+    --fs-title: 24px;
+    --card-dark-selected: #d9d9d91f;
+    --dialog-bg: var(--bg);
+    --panel-bg: var(--card-dark);
+    --btn-brown: var(--card-dark-selected);
+    --toast-bg: var(--tab-inactive);
+    --overlay: rgba(0, 0, 0, 0.6);
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    background: var(--bg);
+    color: var(--white);
+    font-family: var(--font-text);
+}
+
+.btn-primary {
+    background: var(--orange-secondary);
+    border: none;
+    border-radius: 8px;
+    padding: 10px 16px;
+    font-family: var(--font-text);
+    font-weight: 700;
+    color: var(--text-dark);
+    cursor: pointer;
+}

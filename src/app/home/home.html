@@ -1,0 +1,72 @@
+<header class="hero">
+    <div class="hero-text">
+        <h1>Collect Feedback, Unlock Ideas</h1>
+        <p>
+            Create and share surveys in minutes – from team events to workplace
+            culture. Collect opinions, engage your audience, and turn feedback into
+            action.
+        </p>
+        <button type="button" class="btn-primary" (click)="openDialog()">New survey</button>
+    </div>
+</header>
+
+<section class="surveys">
+    <h2>Your surveys</h2>
+
+    <h3 class="subhead">Ending soon surveys</h3>
+    <div class="cards">
+        @for (survey of endingSoon(); track survey.id) {
+        <app-survey-card [survey]="survey" />
+        } @empty {
+        <p>No surveys ending soon.</p>
+        }
+    </div>
+
+    <div class="toolbar">
+        <div class="tabs">
+            <button type="button" [class.selected]="tab() === 'active'" (click)="setTab('active')">Active
+                survey</button>
+            <button type="button" [class.selected]="tab() === 'past'" (click)="setTab('past')">Past survey</button>
+        </div>
+        <div class="sort">
+            <div class="sort-box">
+                <button type="button" class="sort-btn" [class.selected]="category() !== 'All'" (click)="toggleMenu()">
+                    <span>Sort by categories</span>
+                    <span class="arrow" [class.open]="open()"></span>
+                </button>
+                @if (open()) {
+                <ul class="menu">
+                    <li><button type="button" (click)="selectCategory('All')">All</button></li>
+                    @for (c of categories; track c) {
+                    <li><button type="button" (click)="selectCategory(c)">{{ c }}</button></li>
+                    }
+                </ul>
+                }
+            </div>
+            @if (category() !== 'All') {
+            <span class="chosen">{{ category() }}</span>
+            }
+        </div>
+    </div>
+
+    <div class="list">
+        @for (survey of visible(); track survey.id) {
+        <app-survey-item [survey]="survey" />
+        } @empty {
+        <p>No surveys found.</p>
+        }
+    </div>
+</section>
+
+@if (dialogOpen()) {
+  <app-survey-dialog (closed)="closeDialog()" (published)="onPublished()" />
+}
+
+@if (toast()) {
+  <div class="toast" role="status">
+    <span>Your survey is now published</span>
+    <button type="button" aria-label="Close" (click)="closeToast()">
+      <img src="icons/close.svg" alt="" />
+    </button>
+  </div>
+}
