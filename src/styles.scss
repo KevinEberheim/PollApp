@@ -30,6 +30,10 @@
     --btn-brown: var(--card-dark-selected);
     --toast-bg: var(--tab-inactive);
     --overlay: rgba(0, 0, 0, 0.6);
+    --orange-heading: #ee9236;
+    --btn-brown: #ffb7704d;
+    --check-hover: #FFCFA199;
+    --check-checked: #ffb770;
 }
 
 * {
@@ -45,6 +49,8 @@ body {
 }
 
 .btn-primary {
+    display: inline-block;
+    text-decoration: none;
     background: var(--orange-secondary);
     border: none;
     border-radius: 8px;

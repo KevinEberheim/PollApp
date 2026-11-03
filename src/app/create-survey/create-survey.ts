@@ -1,24 +1,24 @@
-import { Component, inject, output, signal } from '@angular/core';
+import { Component, ElementRef, inject, signal, viewChild } from '@angular/core';
+import { Router, RouterLink } from '@angular/router';
+import { CategorySelect } from '../category-select/category-select';
 import { AbstractControl, FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Supabase } from '../supabase';
 import { NewSurvey } from '../interfaces/survey.interface';
-import { CATEGORIES } from '../constants/categories';
 import { MAX_QUESTIONS } from '../constants/limits';
 
 @Component({
-  selector: 'app-survey-dialog',
-  imports: [ReactiveFormsModule],
-  templateUrl: './survey-dialog.html',
-  styleUrl: './survey-dialog.scss',
+  selector: 'app-create-survey',
+  imports: [ReactiveFormsModule, RouterLink, CategorySelect],
+  templateUrl: './create-survey.html',
+  styleUrl: './create-survey.scss',
 })
-export class SurveyDialog {
+export class CreateSurvey {
   private fb = inject(FormBuilder);
   private db = inject(Supabase);
-  closed = output<void>();
-  published = output<void>();
+  private router = inject(Router);
+  toast = viewChild<ElementRef<HTMLDialogElement>>('toast');
   saving = signal(false);
   error = signal('');
-  categories = CATEGORIES;
   maxQuestions = MAX_QUESTIONS;
   today = new Date().toLocaleDateString('sv-SE');
   required = [Validators.required, Validators.pattern(/\S/)];
@@ -117,7 +117,7 @@ export class SurveyDialog {
     this.error.set('');
     try {
       await this.db.createSurvey(this.toSurvey());
-      this.published.emit();
+      this.showToast();
     } catch {
       this.error.set('Survey could not be saved. Please try again.');
     }
@@ -141,5 +141,25 @@ export class SurveyDialog {
         options: q.options.map((o) => o.trim()),
       })),
     };
+  }
+
+  /**
+ * Stores the selected category in the form.
+ * @param category The selected category.
+ */
+  setCategory(category: string): void {
+    this.form.controls.category.setValue(category);
+    this.form.controls.category.markAsTouched();
+  }
+
+  /** Shows the success dialog and closes it automatically after 3 seconds. */
+  showToast(): void {
+    this.toast()?.nativeElement.showModal();
+    setTimeout(() => this.toast()?.nativeElement.close(), 3000);
+  }
+
+  /** Navigates back to the home page. */
+  leave(): void {
+    this.router.navigateByUrl('/');
   }
 }

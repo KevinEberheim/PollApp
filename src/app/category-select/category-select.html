@@ -1,0 +1,22 @@
+<div class="sort">
+    <div class="sort-box">
+        <button type="button" class="sort-btn" [class.selected]="chosen()" [class.invalid]="invalid()"
+            (click)="toggleMenu()">
+            <span>{{ label() }}</span>
+            <span class="arrow" [class.open]="open()"></span>
+        </button>
+        @if (open()) {
+        <ul class="menu">
+            @if (allOption()) {
+            <li><button type="button" (click)="select('All')">All</button></li>
+            }
+            @for (c of categories; track c) {
+            <li><button type="button" (click)="select(c)">{{ c }}</button></li>
+            }
+        </ul>
+        }
+    </div>
+    @if (chosen()) {
+    <span class="chosen">{{ value() }}</span>
+    }
+</div>
