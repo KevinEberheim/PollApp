@@ -1,0 +1,70 @@
+@if (survey(); as s) {
+  <header class="top">
+    <a routerLink="/" class="home">Poll App</a>
+    <a routerLink="/create" class="btn-primary">Create survey</a>
+  </header>
+
+  <main class="layout">
+    <section class="panel">
+      <span class="badge">{{ running() ? 'Published' : 'Ended' }}</span>
+      <div class="meta">
+        @if (s.end_date) {
+          <span>Ends on {{ s.end_date | date: 'dd.MM.yyyy' }}</span>
+        } @else {
+          <span>No end date</span>
+        }
+        <span>Category: {{ s.category }}</span>
+      </div>
+      <h1>{{ s.title }}</h1>
+      @if (s.description) {
+        <p class="description">{{ s.description }}</p>
+      }
+
+      <div class="questions">
+        @for (q of s.questions; track $index; let qi = $index) {
+          <div class="question">
+            <h2>{{ qi + 1 }}. {{ q.text }}</h2>
+            @if (q.multiple_choice) {
+              <small>More than one answers are possible.</small>
+            }
+            @for (o of q.options; track $index; let oi = $index) {
+              <label class="option">
+                <input type="checkbox" class="checkbox" [checked]="isSelected(qi, oi)"
+                  [disabled]="locked()" (change)="toggle(qi, oi)" />
+                <span><b>{{ letter(oi) }}.</b> {{ o }}</span>
+              </label>
+            }
+          </div>
+        }
+      </div>
+
+      <div class="foot">
+        @if (error()) {
+          <p class="message">{{ error() }}</p>
+        }
+        <button type="button" class="complete" [disabled]="locked()" (click)="complete()">
+          Complete survey
+        </button>
+      </div>
+    </section>
+
+    <aside class="results">
+      <h2>Survey results <span>LIVE</span></h2>
+      @if (hasVotes()) {
+        @for (r of results(); track $index; let qi = $index) {
+          <h3>{{ qi + 1 }}. {{ r.text }}</h3>
+          @for (o of r.options; track $index; let oi = $index) {
+            <div class="bar-row">
+              <span>{{ letter(oi) }}</span>
+              <div class="bar"><div class="fill" [style.width.%]="o.percent"></div></div>
+              <span class="percent">{{ o.percent }}%</span>
+            </div>
+          }
+        }
+      } @else {
+        <p>Results will be shown here after participants complete the survey.</p>
+        <p class="empty">There are no answers yet.</p>
+      }
+    </aside>
+  </main>
+}

@@ -1,3 +1,7 @@
+export interface QuestionResult {
+  text: string;
+  options: { label: string; percent: number }[];
+}
 export interface Question {
   text: string;
   multiple_choice: boolean;

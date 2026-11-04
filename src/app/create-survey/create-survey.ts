@@ -16,6 +16,7 @@ export class CreateSurvey {
   private fb = inject(FormBuilder);
   private db = inject(Supabase);
   private router = inject(Router);
+  private createdId = 0;
   toast = viewChild<ElementRef<HTMLDialogElement>>('toast');
   saving = signal(false);
   error = signal('');
@@ -116,7 +117,8 @@ export class CreateSurvey {
     this.saving.set(true);
     this.error.set('');
     try {
-      await this.db.createSurvey(this.toSurvey());
+      const survey = await this.db.createSurvey(this.toSurvey());
+      this.createdId = survey.id;
       this.showToast();
     } catch {
       this.error.set('Survey could not be saved. Please try again.');
@@ -158,8 +160,8 @@ export class CreateSurvey {
     setTimeout(() => this.toast()?.nativeElement.close(), 3000);
   }
 
-  /** Navigates back to the home page. */
+  /** Navigates to the newly created survey. */
   leave(): void {
-    this.router.navigateByUrl('/');
+    this.router.navigate(['/survey', this.createdId]);
   }
 }
