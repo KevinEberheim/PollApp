@@ -7,7 +7,11 @@
 }
 
 .top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 32px; }
-.home { color: var(--text-dark); font-family: var(--font-heading); font-size: 24px; text-decoration: none; }
+.home {
+  display: inline-block;
+  line-height: 0;
+}
+.home img { height: 44px; width: auto; }
 
 .layout { display: grid; grid-template-columns: 1.3fr 1fr; gap: 48px; align-items: start; }
 

@@ -1,21 +1,66 @@
 .hero {
-    padding: 48px 64px;
+  padding: 48px 64px;
 
-    h1 {
-        font-family: var(--font-heading);
-        font-weight: 400;
-        font-size: 100px;
-        color: var(--orange-primary);
-        max-width: 700px;
+  h1 {
+    font-family: var(--font-heading);
+    font-weight: 400;
+    font-size: 100px;
+    color: var(--orange-primary);
+    max-width: 700px;
+  }
+
+  p {
+    font-weight: 600;
+    font-size: 24px;
+    color: var(--white);
+    max-width: 700px;
+    margin: 24px 0;
+  }
+
+  &--content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 48px;
+  }
+}
+
+.visual {
+    position: relative;
+    flex-shrink: 0;
+    width: 400px;
+
+    img {
+        display: block;
+        width: 100%;
+        height: auto;
+        transition: opacity 250ms ease-in-out;
     }
 
-    p {
-        font-weight: 600;
-        font-size: 24px;
-        color: var(--white);
-        max-width: 700px;
-        margin: 24px 0;
+    .hover {
+        position: absolute;
+        inset: 0;
+        opacity: 0;
     }
+
+    &:hover .hover {
+        opacity: 1;
+    }
+
+    &:hover .base {
+        opacity: 0;
+    }
+}
+
+.logo {
+    display: inline-block;
+    margin-bottom: 32px;
+    line-height: 0;
+}
+
+.logo img {
+    height: 48px;
+    width: auto;
 }
 
 .surveys h2 {
