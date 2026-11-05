@@ -85,6 +85,18 @@ export class Supabase {
   }
 
   /**
+   * Listens to all changes of the surveys table in real time.
+   * @param onChange Callback that is called after any insert, update or delete.
+   * @returns The channel, needed to unsubscribe later.
+   */
+  subscribeToSurveys(onChange: () => void): RealtimeChannel {
+    return this.supabase
+      .channel('surveys-all')
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'surveys' }, () => onChange())
+      .subscribe();
+  }
+
+  /**
    * Stops a realtime subscription.
    * @param channel The channel returned by subscribeToVotes.
    */

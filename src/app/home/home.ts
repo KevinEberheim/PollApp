@@ -1,5 +1,6 @@
-import { Component, OnInit, computed, signal } from '@angular/core';
+import { Component, OnDestroy, OnInit, computed, signal } from '@angular/core';
 import { Supabase } from '../supabase';
+import { RealtimeChannel } from '@supabase/supabase-js';
 import { Survey } from '../interfaces/survey.interface';
 import { isActive } from '../utils/survey.utils';
 import { SurveyCard } from '../survey-card/survey-card';
@@ -14,7 +15,7 @@ import { CategorySelect } from '../category-select/category-select';
   templateUrl: './home.html',
   styleUrl: './home.scss',
 })
-export class Home implements OnInit {
+export class Home implements OnInit, OnDestroy {
   surveys = signal<Survey[]>([]);
   tab = signal<'active' | 'past'>('active');
   category = signal('All');
@@ -25,10 +26,23 @@ export class Home implements OnInit {
     this.filterByCategory(this.tab() === 'active' ? this.active() : this.past())
   );
 
+  private channel?: RealtimeChannel;
+
   constructor(private db: Supabase) { }
 
-  /** Loads all surveys when the component is initialized. */
+  /** Loads all surveys and reloads them on every change in the database. */
   async ngOnInit(): Promise<void> {
+    await this.reload();
+    this.channel = this.db.subscribeToSurveys(() => this.reload());
+  }
+
+  /** Stops the realtime subscription. */
+  ngOnDestroy(): void {
+    if (this.channel) this.db.unsubscribe(this.channel);
+  }
+
+  /** Loads all surveys from the database. */
+  async reload(): Promise<void> {
     this.surveys.set(await this.db.getSurveys());
   }
 

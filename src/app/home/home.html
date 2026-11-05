@@ -1,50 +1,51 @@
-<header class="hero">
-    <a routerLink="/" class="logo" aria-label="Poll App">
-        <img src="/images/Home_Logo.svg" alt="Poll App" />
-    </a>
-    <div class="hero--content">
-        <div class="hero-text">
-            <h1>Collect Feedback, Unlock Ideas</h1>
-            <p>
-                Create and share surveys in minutes – from team events to workplace
-                culture. Collect opinions, engage your audience, and turn feedback into
-                action.
-            </p>
-            <a routerLink="/create" class="btn-primary">New survey</a>
+<div class="content">
+    <header class="hero">
+        <a routerLink="/" class="logo" aria-label="Poll App">
+            <img src="/images/Home_Logo.svg" alt="Poll App" />
+        </a>
+        <div class="hero--content">
+            <div class="hero-text">
+                <h1>Collect Feedback, Unlock Ideas</h1>
+                <p>
+                    Create and share surveys in minutes – from team events to workplace
+                    culture. Collect opinions, engage your audience, and turn feedback into
+                    action.
+                </p>
+                <a routerLink="/create" class="btn-primary">New survey</a>
+            </div>
+            <div class="visual">
+                <img class="base" src="/images/Home_Visual.svg" alt="Illustration of a survey on a smartphone" />
+                <img class="hover" src="/images/Home_Hover.svg" alt="" />
+            </div>
         </div>
-        <div class="visual">
-            <img class="base" src="/images/Home_Visual.svg" alt="Illustration of a survey on a smartphone" />
-            <img class="hover" src="/images/Home_Hover.svg" alt="" />
+    </header>
+    <section class="surveys">
+        <h2>Your surveys</h2>
+
+        <h3 class="subhead">Ending soon surveys</h3>
+        <div class="cards">
+            @for (survey of endingSoon(); track survey.id) {
+            <app-survey-card [survey]="survey" />
+            } @empty {
+            <p>No surveys ending soon.</p>
+            }
         </div>
-    </div>
-</header>
 
-<section class="surveys">
-    <h2>Your surveys</h2>
-
-    <h3 class="subhead">Ending soon surveys</h3>
-    <div class="cards">
-        @for (survey of endingSoon(); track survey.id) {
-        <app-survey-card [survey]="survey" />
-        } @empty {
-        <p>No surveys ending soon.</p>
-        }
-    </div>
-
-    <div class="toolbar">
-        <div class="tabs">
-            <button type="button" [class.selected]="tab() === 'active'" (click)="setTab('active')">Active
-                survey</button>
-            <button type="button" [class.selected]="tab() === 'past'" (click)="setTab('past')">Past survey</button>
+        <div class="toolbar">
+            <div class="tabs">
+                <button type="button" [class.selected]="tab() === 'active'" (click)="setTab('active')">Active
+                    survey</button>
+                <button type="button" [class.selected]="tab() === 'past'" (click)="setTab('past')">Past survey</button>
+            </div>
+            <app-category-select [(value)]="category" [allOption]="true" />
         </div>
-        <app-category-select [(value)]="category" [allOption]="true" />
-    </div>
 
-    <div class="list">
-        @for (survey of visible(); track survey.id) {
-        <app-survey-item [survey]="survey" />
-        } @empty {
-        <p>No surveys found.</p>
-        }
-    </div>
-</section>
+        <div class="list">
+            @for (survey of visible(); track survey.id) {
+            <app-survey-item [survey]="survey" />
+            } @empty {
+            <p>No surveys found.</p>
+            }
+        </div>
+    </section>
+</div>

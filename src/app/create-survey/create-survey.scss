@@ -1,8 +1,13 @@
 :host {
   display: block;
   min-height: 100vh;
-  padding: 72px 0 0 110px;
   background: #ffffff;
+}
+
+.content {
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 72px 0 0 110px;
 }
 
 .page {
