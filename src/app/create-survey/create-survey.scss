@@ -65,11 +65,26 @@
 .date { width: 220px; }
 .questions { grid-area: questions; display: grid; grid-template-columns: 1fr 1fr; gap: 24px 48px; margin-top: 16px; }
 .add-question { align-self: start; }
+.add-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+}
+.hint { font-size: 12px; font-weight: 400; }
 
 label, .a-head span { font-weight: 700; font-size: var(--fs-text); }
 small { font-weight: 400; }
 
-.row { display: flex; align-items: flex-start; gap: 8px; }
+.name > label,
+.desc > label,
+.date > label {
+  display: block;
+  margin-bottom: 4px;
+}
+
+.row { display: flex; align-items: center; gap: 8px; }
+.desc .row { align-items: flex-start; }
 
 input:not([type='checkbox']), textarea {
   width: 100%;
@@ -84,10 +99,16 @@ input:not([type='checkbox']), textarea {
 textarea { min-height: 76px; resize: vertical; }
 .invalid { border-color: var(--orange-primary) !important; }
 
+input:not([type='checkbox']):focus,
+textarea:focus {
+  background: var(--input-focus);
+  outline: none;
+}
+
 .question { display: flex; flex-direction: column; gap: 8px; }
 .q-head, .a-head { display: flex; justify-content: space-between; align-items: center; }
 .check { display: flex; align-items: center; gap: 6px; font-weight: 400; font-size: 12px; }
-.letter { min-width: 20px; padding-top: 4px; font-weight: 700; }
+.letter { min-width: 20px; font-weight: 700; }
 .answer { margin-bottom: 8px; }
 
 .icon, .link {

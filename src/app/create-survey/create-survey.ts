@@ -4,7 +4,7 @@ import { CategorySelect } from '../category-select/category-select';
 import { AbstractControl, FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Supabase } from '../supabase';
 import { NewSurvey } from '../interfaces/survey.interface';
-import { MAX_QUESTIONS } from '../constants/limits';
+import { MAX_OPTIONS, MAX_QUESTIONS } from '../constants/limits';
 
 @Component({
   selector: 'app-create-survey',
@@ -21,6 +21,7 @@ export class CreateSurvey {
   saving = signal(false);
   error = signal('');
   maxQuestions = MAX_QUESTIONS;
+  maxOptions = MAX_OPTIONS;
   today = new Date().toLocaleDateString('sv-SE');
   required = [Validators.required, Validators.pattern(/\S/)];
   questions = this.fb.array([this.newQuestion()]);
@@ -58,31 +59,46 @@ export class CreateSurvey {
   }
 
   /**
-   * Removes a question. The last remaining question is only cleared.
+   * Removes a question. The first question is only cleared.
    * @param qi Index of the question.
    */
   removeQuestion(qi: number): void {
-    if (this.questions.length > 1) this.questions.removeAt(qi);
-    else this.questions.at(qi).reset();
+    if (qi === 0) this.resetQuestion(0);
+    else this.questions.removeAt(qi);
   }
 
   /**
-   * Adds an empty answer to a question.
+   * Clears the text and all answers of a question.
+   * Multiple choice is unchecked and the question keeps two empty answers.
+   * @param qi Index of the question.
+   */
+  resetQuestion(qi: number): void {
+    const question = this.questions.at(qi);
+    question.reset();
+    while (question.controls.options.length > 2) {
+      question.controls.options.removeAt(2);
+    }
+  }
+
+  /**
+   * Adds an empty answer to a question until the maximum is reached.
    * @param qi Index of the question.
    */
   addOption(qi: number): void {
-    this.questions.at(qi).controls.options.push(this.newOption());
+    const options = this.questions.at(qi).controls.options;
+    if (options.length < this.maxOptions) options.push(this.newOption());
   }
 
   /**
-   * Removes an answer. With only two answers left, it is only cleared.
+   * Clears an answer. An already empty answer is removed,
+   * except for the first two answers, which always stay.
    * @param qi Index of the question.
    * @param oi Index of the answer.
    */
-  removeOption(qi: number, oi: number): void {
+  clearOption(qi: number, oi: number): void {
     const options = this.questions.at(qi).controls.options;
-    if (options.length > 2) options.removeAt(oi);
-    else options.at(oi).reset();
+    if (oi >= 2 && options.at(oi).value === '') options.removeAt(oi);
+    else options.at(oi).setValue('');
   }
 
   /**

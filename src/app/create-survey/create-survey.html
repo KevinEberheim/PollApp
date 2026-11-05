@@ -55,7 +55,8 @@
                 <div class="a-head">
                     <span>Answers</span>
                     <label class="check">
-                        <input type="checkbox" class="checkbox" formControlName="multiple_choice" /> Allow multiple answers.
+                        <input type="checkbox" class="checkbox" formControlName="multiple_choice" /> Allow multiple
+                        answers.
                     </label>
                 </div>
                 <div formArrayName="options">
@@ -63,15 +64,20 @@
                     <div class="row answer">
                         <span class="letter">{{ letter(oi) }}.</span>
                         <input [formControlName]="oi" [class.invalid]="isInvalid(o)" />
-                        <button type="button" class="icon" aria-label="Remove answer" (click)="removeOption(qi, oi)">
+                        <button type="button" class="icon" aria-label="Clear answer" (click)="clearOption(qi, oi)">
                             <img src="icons/trash.svg" alt="" />
                         </button>
                     </div>
                     }
                 </div>
-                <button type="button" class="link" (click)="addOption(qi)">
-                    Add answer <img src="icons/plus.svg" alt="" />
-                </button>
+                <div class="add-row">
+                    @if (q.controls.options.length < maxOptions) { <button type="button" class="link"
+                        (click)="addOption(qi)">
+                        Add answer <img src="/icons/plus.svg" alt="" />
+                        </button>
+                        }
+                        <small class="hint">You can add up to {{ maxOptions }} answer fields.</small>
+                </div>
             </div>
             }
             <div class="add-question">
