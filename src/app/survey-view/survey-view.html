@@ -8,7 +8,12 @@
   </header>
   <main class="layout">
     <section class="panel">
-      <span class="badge">{{ running() ? 'Published' : 'Ended' }}</span>
+      <div class="badge-row">
+        <span class="badge">{{ running() ? 'Published' : 'Ended' }}</span>
+        <a routerLink="/" class="close" aria-label="Close survey">
+          <img src="/icons/close.svg" alt="" />
+        </a>
+      </div>
       <div class="meta">
         @if (s.end_date) {
         <span>Ends on {{ s.end_date | date: 'dd.MM.yyyy' }}</span>
@@ -47,30 +52,37 @@
         <p class="message">{{ error() }}</p>
         }
         <button type="button" class="complete" [disabled]="locked()" (click)="complete()">
-          Complete survey
+          Complete<span class="long"> survey</span>
+          <img class="check" src="/icons/check.svg" alt="" />
         </button>
       </div>
     </section>
 
-    <aside class="results">
-      <h2>Survey results <span>LIVE</span></h2>
-      @if (hasVotes()) {
-      @for (r of results(); track $index; let qi = $index) {
-      <h3 class="q-title"><span class="num">{{ qi + 1 }}.</span><span> {{ r.text }}</span></h3>
-      @for (o of r.options; track $index; let oi = $index) {
-      <div class="bar-row">
-        <span class="bar-letter">{{ letter(oi) }}</span>
-        <div class="bar">
-          <div class="fill" [style.width.%]="o.percent"></div>
+    <aside class="results" [class.collapsed]="!resultsOpen()">
+      <button type="button" class="toggle" (click)="toggleResults()">
+        {{ resultsOpen() ? 'Close results' : 'Open results' }}
+        <span class="arrow" [class.open]="resultsOpen()"></span>
+      </button>
+      <div class="results-body">
+        <h2>Survey results <span>LIVE</span></h2>
+        @if (hasVotes()) {
+        @for (r of results(); track $index; let qi = $index) {
+        <h3 class="q-title"><span class="num">{{ qi + 1 }}.</span><span> {{ r.text }}</span></h3>
+        @for (o of r.options; track $index; let oi = $index) {
+        <div class="bar-row">
+          <span class="bar-letter">{{ letter(oi) }}</span>
+          <div class="bar">
+            <div class="fill" [style.width.%]="o.percent"></div>
+          </div>
+          <span class="percent">{{ o.percent }}%</span>
         </div>
-        <span class="percent">{{ o.percent }}%</span>
+        }
+        }
+        } @else {
+        <p>Results will be shown here after participants complete the survey.</p>
+        <p class="empty">There are no answers yet.</p>
+        }
       </div>
-      }
-      }
-      } @else {
-      <p>Results will be shown here after participants complete the survey.</p>
-      <p class="empty">There are no answers yet.</p>
-      }
     </aside>
   </main>
 </div>

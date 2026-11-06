@@ -33,6 +33,7 @@ export class SurveyView implements OnInit, OnDestroy {
     const survey = this.survey();
     return survey ? survey.questions.map((q, qi) => this.toResult(q, qi)) : [];
   });
+  resultsOpen = signal(true);
 
   /** Loads the survey and its votes and starts the realtime subscription. */
   async ngOnInit(): Promise<void> {
@@ -132,5 +133,10 @@ export class SurveyView implements OnInit, OnDestroy {
       this.submitted.set(false);
       this.error.set('Your answers could not be saved. Please try again.');
     }
+  }
+
+  /** Opens or closes the results on small screens. */
+  toggleResults(): void {
+    this.resultsOpen.update((value) => !value);
   }
 }
