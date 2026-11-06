@@ -11,7 +11,9 @@
                     culture. Collect opinions, engage your audience, and turn feedback into
                     action.
                 </p>
-                <a routerLink="/create" class="btn-primary">New survey</a>
+                <a routerLink="/create" class="btn-primary">
+                    New survey <img class="plus" src="/icons/plus.svg" alt="" />
+                </a>
             </div>
             <div class="visual">
                 <img class="base" src="/images/Home_Visual.svg" alt="Illustration of a survey on a smartphone" />
@@ -40,11 +42,16 @@
             <app-category-select [(value)]="category" [allOption]="true" />
         </div>
 
-        <div class="list">
-            @for (survey of visible(); track survey.id) {
-            <app-survey-item [survey]="survey" />
-            } @empty {
-            <p>No surveys found.</p>
+        <div class="list-wrap">
+            <div class="list" #list (scroll)="onScroll()" [style.max-height.px]="maxHeight()">
+                @for (survey of visible(); track survey.id) {
+                <app-survey-item [survey]="survey" />
+                } @empty {
+                <p>No surveys found.</p>
+                }
+            </div>
+            @if (scrollable()) {
+            <div class="thumb" [style.top.px]="thumbTop()"></div>
             }
         </div>
     </section>

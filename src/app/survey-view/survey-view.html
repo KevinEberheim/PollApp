@@ -25,10 +25,12 @@
       <div class="questions">
         @for (q of s.questions; track $index; let qi = $index) {
         <div class="question">
-          <h2><span class="number">{{ qi + 1 }}.</span><span class="text">{{ q.text }}</span> </h2>
-          @if (q.multiple_choice) {
-          <small>More than one answers are possible.</small>
-          }
+          <div class="q-head">
+            <h2 class="q-title"><span class="num">{{ qi + 1 }}.</span><span>{{ q.text }}</span></h2>
+            @if (q.multiple_choice) {
+            <small>More than one answers are possible.</small>
+            }
+          </div>
           @for (o of q.options; track $index; let oi = $index) {
           <label class="option">
             <input type="checkbox" class="checkbox" [checked]="isSelected(qi, oi)" [disabled]="locked()"
@@ -54,10 +56,10 @@
       <h2>Survey results <span>LIVE</span></h2>
       @if (hasVotes()) {
       @for (r of results(); track $index; let qi = $index) {
-      <h3>{{ qi + 1 }}. {{ r.text }}</h3>
+      <h3 class="q-title"><span class="num">{{ qi + 1 }}.</span><span> {{ r.text }}</span></h3>
       @for (o of r.options; track $index; let oi = $index) {
       <div class="bar-row">
-        <span>{{ letter(oi) }}</span>
+        <span class="bar-letter">{{ letter(oi) }}</span>
         <div class="bar">
           <div class="fill" [style.width.%]="o.percent"></div>
         </div>

@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit, computed, signal } from '@angular/core';
+import { Component, ElementRef, OnDestroy, OnInit, computed, effect, signal, viewChild } from '@angular/core';
 import { Supabase } from '../supabase';
 import { RealtimeChannel } from '@supabase/supabase-js';
 import { Survey } from '../interfaces/survey.interface';
@@ -25,10 +25,20 @@ export class Home implements OnInit, OnDestroy {
   visible = computed(() =>
     this.filterByCategory(this.tab() === 'active' ? this.active() : this.past())
   );
+  list = viewChild<ElementRef<HTMLElement>>('list');
+  thumbTop = signal(0);
+  scrollable = signal(false);
+  maxHeight = signal<number | null>(null);
+  thumbHeight = 64;
 
   private channel?: RealtimeChannel;
 
-  constructor(private db: Supabase) { }
+  constructor(private db: Supabase) {
+    effect(() => {
+      this.visible();
+      setTimeout(() => this.onScroll());
+    });
+  }
 
   /** Loads all surveys and reloads them on every change in the database. */
   async ngOnInit(): Promise<void> {
@@ -63,5 +73,27 @@ export class Home implements OnInit, OnDestroy {
   setTab(tab: 'active' | 'past'): void {
     this.tab.set(tab);
     this.category.set('All');
+  }
+
+  /** Updates the custom scrollbar position and visibility. */
+  onScroll(): void {
+    const el = this.list()?.nativeElement;
+    if (!el) return;
+    this.updateHeight(el);
+    const max = el.scrollHeight - el.clientHeight;
+    this.scrollable.set(max > 2 && el.children.length > 6);
+    const ratio = max > 0 ? el.scrollTop / max : 0;
+    this.thumbTop.set(ratio * (el.clientHeight - this.thumbHeight));
+  }
+
+  /**
+   * Limits the list to the height of its first three rows.
+   * @param el The list element.
+   */
+  updateHeight(el: HTMLElement): void {
+    const items = Array.from(el.children) as HTMLElement[];
+    const last = items[Math.min(5, items.length - 1)];
+    if (!last) return this.maxHeight.set(null);
+    this.maxHeight.set(last.offsetTop + last.offsetHeight - items[0].offsetTop);
   }
 }

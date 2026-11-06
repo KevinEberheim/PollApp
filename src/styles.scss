@@ -11,6 +11,12 @@
     font-weight: 200 1000;
 }
 
+@font-face {
+  font-family: 'Nokora';
+  src: url('/fonts/Nokora-VariableFont_wght.ttf') format('truetype');
+  font-weight: 200 1000;
+}
+
 :root {
     --bg: #35273a;
     --orange-primary: #ffb770;
@@ -20,6 +26,7 @@
     --white: #ffffff;
     --font-heading: 'Nerko One', cursive;
     --font-text: 'Mulish', sans-serif;
+    --font-button: 'Nokora', sans-serif;
     --tab-inactive: #fee9d4;
     --text-dark: #35273a;
     --fs-category: 16px;
@@ -38,6 +45,7 @@
     --bar-track: #eeeeee;
     --check-border: var(--white);
     --input-focus: #fee9d4;
+    --scroll-thumb: #ffb770;
 }
 
 * {
@@ -61,7 +69,7 @@ body {
     padding: 10px 16px;
     font-family: var(--font-text);
     font-weight: 700;
-    color: var(--text-dark);
+    color: #221227;
     cursor: pointer;
 }
 
