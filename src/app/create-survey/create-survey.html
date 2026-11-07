@@ -1,13 +1,13 @@
 <div class="content">
     <a routerLink="/" class="logo" aria-label="Poll App">
-        <img src="/images/Survey_View_Logo.svg" alt="Poll App" />
+        <img src="images/Survey_View_Logo.svg" alt="Poll App" />
     </a>
     <main class="page">
         <span class="draft">Draft</span>
         <div class="head">
             <h1>Create new survey</h1>
             <a routerLink="/" class="btn-brown cancel">
-                <span class="label">Cancel</span> <img src="/icons/close.svg" alt="" />
+                <span class="label">Cancel</span> <img src="icons/close.svg" alt="" />
             </a>
         </div>
 
@@ -79,7 +79,7 @@
                     <div class="add-row">
                         @if (q.controls.options.length < maxOptions) { <button type="button" class="link"
                             (click)="addOption(qi)">
-                            Add answer <img src="/icons/plus.svg" alt="" />
+                            Add answer <img src="icons/plus.svg" alt="" />
                             </button>
                             }
                             <small class="hint">You can add up to {{ maxOptions }} answer fields.</small>
@@ -105,7 +105,7 @@
             <p class="message">{{ error() }}</p>
             }
             <button type="submit" form="survey-form" class="btn-primary" [disabled]="saving()">
-                Publish <img class="check" src="/icons/check.svg" alt="" />
+                Publish <img class="check" src="icons/check.svg" alt="" />
             </button>
         </div>
 

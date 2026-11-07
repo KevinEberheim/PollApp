@@ -2,7 +2,7 @@
 <div class="content">
   <header class="top">
     <a routerLink="/" class="home" aria-label="Poll App, back to home">
-      <img src="/images/Survey_View_Logo.svg" alt="Poll App" />
+      <img src="images/Survey_View_Logo.svg" alt="Poll App" />
     </a>
     <a routerLink="/create" class="btn-primary">Create survey</a>
   </header>
@@ -11,7 +11,7 @@
       <div class="badge-row">
         <span class="badge">{{ running() ? 'Published' : 'Ended' }}</span>
         <a routerLink="/" class="close" aria-label="Close survey">
-          <img src="/icons/close.svg" alt="" />
+          <img src="icons/close.svg" alt="" />
         </a>
       </div>
       <div class="meta">
@@ -53,7 +53,7 @@
         }
         <button type="button" class="complete" [disabled]="locked()" (click)="complete()">
           Complete<span class="long"> survey</span>
-          <img class="check" src="/icons/check.svg" alt="" />
+          <img class="check" src="icons/check.svg" alt="" />
         </button>
       </div>
     </section>
