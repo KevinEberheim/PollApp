@@ -45,7 +45,7 @@ The app runs at `http://localhost:4200/`.
 Production build (example with a sub path):
 
 ```bash
-ng build --base-href /angular-projects/PollApp/
+ng build
 ```
 
 Upload the content of `dist/<project>/browser/` to the server.
