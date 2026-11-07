@@ -1,59 +1,144 @@
 # PollApp
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 21.2.28.
+A survey app built with Angular, TypeScript and SCSS. Users can create surveys with several questions, vote on running surveys and watch the results update in real time. Supabase is used as the backend. The design is based on a Figma file.
 
-## Development server
+Live: https://kevin-eberheim.developerakademie.net/angular-projects/PollApp/
 
-To start a local development server, run:
+## Features
 
-```bash
-ng serve
-```
+- Home page with "Ending soon" cards (earliest deadline first) and a list of all surveys
+- Tabs for active and past surveys
+- Category filter per tab, including "All"
+- Create page with required and optional fields, validation and up to 4 questions with up to 6 answers each
+- Single or multiple choice, set per question
+- Detail page with voting and live results next to the survey (desktop layout)
+- Past surveys can be viewed but not voted on
+- Home page updates automatically when the `surveys` table changes
+- Responsive layout for mobile (375px)
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+## Tech Stack
 
-## Code scaffolding
+- Angular 21 (standalone components, signals, reactive forms, routing, pipes)
+- TypeScript
+- SCSS (CSS animations, no Angular animations)
+- Supabase (PostgreSQL, Realtime)
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+## Routes
 
-```bash
-ng generate component component-name
-```
+| Path          | Page                           |
+| ------------- | ------------------------------ |
+| `/`           | Home                           |
+| `/create`     | Create a new survey            |
+| `/survey/:id` | Survey detail with live result |
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+## Getting Started
 
-```bash
-ng generate --help
-```
-
-## Building
-
-To build the project run:
-
-```bash
-ng build
-```
-
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
-
-## Running unit tests
-
-To execute unit tests with the [Vitest](https://vitest.dev/) test runner, use the following command:
+Requirements: Node.js, npm and the Angular CLI.
 
 ```bash
-ng test
+npm install
+npm start
 ```
 
-## Running end-to-end tests
+The app runs at `http://localhost:4200/`.
 
-For end-to-end (e2e) testing, run:
+Production build (example with a sub path):
 
 ```bash
-ng e2e
+ng build --base-href /angular-projects/PollApp/
 ```
 
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
+Upload the content of `dist/<project>/browser/` to the server.
 
-## Additional Resources
+## Supabase Setup
 
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+The Supabase client is provided as a service in `src/app/supabase.ts`. Replace the project URL and the publishable key with your own.
+
+The publishable key is meant for the frontend, but it does not protect any data. Protection comes only from Row Level Security (RLS).
+
+### Tables
+
+`surveys`
+
+| Column       | Type        | Notes                         |
+| ------------ | ----------- | ----------------------------- |
+| `id`         | int8        | identity, primary key         |
+| `title`      | text        | not null                      |
+| `description`| text        | nullable                      |
+| `category`   | text        | not null                      |
+| `end_date`   | timestamptz | nullable (no deadline)        |
+| `questions`  | jsonb       | not null                      |
+| `created_at` | timestamptz | not null, default `now()`     |
+
+`votes`
+
+| Column           | Type        | Notes                                      |
+| ---------------- | ----------- | ------------------------------------------ |
+| `id`             | int8        | identity, primary key                      |
+| `survey_id`      | int8        | foreign key to `surveys.id`, on delete cascade |
+| `question_index` | int4        | not null                                   |
+| `option_index`   | int4        | not null                                   |
+| `created_at`     | timestamptz | not null, default `now()`                  |
+
+Format of `questions`:
+
+```json
+[
+  {
+    "text": "Which date would work best for you?",
+    "multiple_choice": false,
+    "options": ["Option A", "Option B"]
+  }
+]
+```
+
+The order of questions and options must not change after creation, because votes reference them by index.
+
+### Policies and Realtime
+
+- RLS enabled on both tables
+- Role `anon`: `SELECT` and `INSERT` on `surveys` and `votes`, no `UPDATE`, no `DELETE`
+- Insert policy on `votes` (with check) rejects votes for expired surveys:
+
+```sql
+exists (
+  select 1 from surveys s
+  where s.id = votes.survey_id
+    and (s.end_date is null or s.end_date > now())
+)
+```
+
+- Realtime enabled for `votes` (live results) and `surveys` (live list)
+
+## Project Structure
+
+```
+src/app/
+  constants/        categories and limits
+  interfaces/       Survey, Question, Vote types
+  utils/            helper functions
+  home/             home page
+  create-survey/    create page
+  survey-view/      detail page with live results
+  survey-card/      "ending soon" card
+  survey-item/      list item
+  category-select/  shared category dropdown
+  ends-in-pipe.ts   "Ends in 2 Days" pipe
+  supabase.ts       database service
+public/
+  images/ icons/    static assets
+src/assets/fonts/   Nerko One, Mulish, Nokora
+```
+
+## Code Conventions
+
+- Every TypeScript function has a maximum of 14 lines
+- Every function is documented in English with TSDoc
+- Templates use `@if`, `@for` and `@switch`
+- CSS/SCSS animations instead of Angular animations
+
+## Known Limitations
+
+- There is no login. Anyone can vote multiple times, and the single choice rule is enforced in the frontend only.
+- The limits of 4 questions and 6 answers are enforced in the frontend only.
+- Surveys cannot be edited or deleted in the app.
