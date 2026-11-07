@@ -116,7 +116,14 @@ h1 {
   font-size: var(--fs-text);
   font-weight: 400;
   cursor: pointer;
+  padding: 4px 8px;
+  border-radius: 8px;
+  transition: background 0.2s ease;
+
+  &:hover:not(.locked) { background: var(--check-hover); }
 }
+
+.option.locked { cursor: default; }
 
 .option .checkbox {
   flex-shrink: 0;
@@ -149,6 +156,9 @@ h1 {
   font-weight: 700;
   font-size: var(--fs-text);
   cursor: pointer;
+  transition: background 0.2s ease;
+
+  &:hover:not(:disabled) { background: #ffb77099; }
 
   &:disabled {
     opacity: 0.6;

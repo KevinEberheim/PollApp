@@ -53,6 +53,11 @@
   font-size: var(--fs-text);
   text-decoration: none;
   cursor: pointer;
+  transition: background 0.2s ease;
+
+  &:hover {
+    background: #ffb77099;
+  }
 }
 
 .panel {
@@ -206,12 +211,28 @@ textarea:focus {
   cursor: pointer;
 }
 
+.icon {
+  border-radius: 4px;
+  transition: background 0.2s ease;
+
+  img { transition: filter 0.2s ease; }
+
+  &:hover {
+    background: var(--orange-primary);
+
+    img { filter: invert(1); }
+  }
+}
+
 .link {
   align-self: flex-start;
   margin-left: 28px;
   border-bottom: 1px solid var(--white);
   font-weight: 700;
   font-size: var(--fs-text);
+  transition: background 0.2s ease;
+
+  &:hover { background: #faf5fe33; }
 }
 
 .foot {
@@ -272,8 +293,7 @@ textarea:focus {
   }
 }
 
-.logo,
-.check {
+.logo {
   display: none;
 }
 
@@ -375,12 +395,14 @@ textarea:focus {
   .btn-primary {
     display: inline-flex;
     align-items: center;
-    gap: 8px;
     font-size: 18px;
     font-weight: 700;
   }
 
-  .btn-primary .check {
-    display: inline-block;
+  .btn-primary .icon-hover {
+    width: 18px;
+    margin-left: 8px;
+    margin-block: 0;
+    opacity: 1;
   }
 }

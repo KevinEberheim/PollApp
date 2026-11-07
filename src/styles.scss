@@ -12,9 +12,9 @@
 }
 
 @font-face {
-  font-family: 'Nokora';
-  src: url('./assets/fonts/Nokora-VariableFont_wght.ttf') format('truetype');
-  font-weight: 200 1000;
+    font-family: 'Nokora';
+    src: url('./assets/fonts/Nokora-VariableFont_wght.ttf') format('truetype');
+    font-weight: 200 1000;
 }
 
 :root {
@@ -46,6 +46,8 @@
     --check-border: var(--white);
     --input-focus: #fee9d4;
     --scroll-thumb: #ffb770;
+    --card-light-hover: #f4e9fb;
+    --card-dark-hover: #d9d9d929;
 }
 
 * {
@@ -61,7 +63,10 @@ body {
 }
 
 .btn-primary {
-    display: inline-block;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 300ms ease-out;
     text-decoration: none;
     background: var(--orange-secondary);
     border: none;
@@ -69,8 +74,27 @@ body {
     padding: 10px 16px;
     font-family: var(--font-text);
     font-weight: 700;
+    height: 40px;
     color: #221227;
     cursor: pointer;
+
+    .icon-hover {
+        display: inline-block;
+        overflow: hidden;
+        width: 0;
+        margin-left: 0;
+        opacity: 0;
+        transition: width 300ms ease-out, margin-left 300ms ease-out, opacity 300ms ease-out;
+    }
+
+    .icon-hover.check {
+        height: 18px;
+        margin-block: 0;
+    }
+}
+
+.invert {
+    filter: invert(1);
 }
 
 .checkbox {
@@ -84,7 +108,7 @@ body {
     cursor: pointer;
     transition: background 0.2s ease, border-color 0.2s ease;
 
-    &:hover:not(:checked):not(:disabled) {
+    &:hover:not(:checked):not(:disabled):not(.in-option) {
         border-color: var(--check-hover);
         background: var(--check-hover);
     }
@@ -102,5 +126,21 @@ body {
     &:focus-visible {
         outline: 2px solid var(--orange-primary);
         outline-offset: 2px;
+    }
+}
+
+@media (hover: hover) and (min-width: 601px) {
+    .btn-primary:hover:not(:disabled) {
+        background: var(--orange-primary);
+
+        .icon-hover {
+            width: 24px;
+            margin-left: 8px;
+            opacity: 1;
+        }
+
+        .icon-hover.check {
+            width: 18px;
+        }
     }
 }

@@ -1,4 +1,6 @@
-:host { display: block; }
+:host {
+  display: block;
+}
 
 .card {
   display: flex;
@@ -11,13 +13,26 @@
   text-decoration: none;
   border-radius: 8px 64px 8px 8px;
   animation: fade-in 0.4s ease both;
-  transition: transform 0.2s ease;
+  transition: transform 0.2s ease, background 0.2s ease;
 
-  &:hover { transform: translateY(-4px); }
+  &:hover {
+    transform: translateY(-4px);
+    background: #f4e9fb;
+  }
+
+  &:hover .tag {
+    background: var(--orange-primary);
+  }
 }
 
-.category { font-size: var(--fs-category); }
-h3 { font-size: var(--fs-title); flex: 1; }
+.category {
+  font-size: var(--fs-category);
+}
+
+h3 {
+  font-size: var(--fs-title);
+  flex: 1;
+}
 
 .tag {
   align-self: flex-start;
@@ -26,9 +41,17 @@ h3 { font-size: var(--fs-title); flex: 1; }
   font-size: var(--fs-text);
   background: var(--orange-secondary);
   color: var(--text-dark);
+  transition: background 0.2s ease;
 }
 
 @keyframes fade-in {
-  from { opacity: 0; transform: translateY(12px); }
-  to { opacity: 1; transform: none; }
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+
+  to {
+    opacity: 1;
+    transform: none;
+  }
 }

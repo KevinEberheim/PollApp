@@ -28,9 +28,19 @@
 
   &.selected {
     background: var(--card-dark-selected);
-    .arrow { border-top-color: var(--orange-primary); }
+
+    .arrow {
+      border-top-color: var(--orange-primary);
+    }
   }
-  &.invalid { outline: 2px solid var(--orange-primary); }
+
+  &.invalid {
+    outline: 2px solid var(--orange-primary);
+  }
+
+  &:hover {
+    background: var(--card-dark-selected);
+  }
 }
 
 .chosen {
@@ -49,7 +59,9 @@
   border-top: 7px solid var(--white);
   transition: transform 0.2s ease;
 
-  &.open { transform: rotate(180deg); }
+  &.open {
+    transform: rotate(180deg);
+  }
 }
 
 .menu {
@@ -68,6 +80,7 @@
     width: 100%;
     padding: 8px 16px;
     border: none;
+    border-radius: 8px;
     background: transparent;
     color: var(--text-dark);
     font-family: var(--font-text);
@@ -75,14 +88,28 @@
     text-align: left;
     white-space: normal;
     cursor: pointer;
+    transition: background 0.2s ease;
+
+    &:hover {
+      background: #f4e9fb;
+    }
   }
 }
 
 @keyframes fade-in {
-  from { opacity: 0; transform: translateY(-4px); }
-  to { opacity: 1; transform: none; }
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+
+  to {
+    opacity: 1;
+    transform: none;
+  }
 }
 
 @media (max-width: 600px) {
-  .sort { align-items: flex-start; }
+  .sort {
+    align-items: flex-start;
+  }
 }

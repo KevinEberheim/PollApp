@@ -4,7 +4,9 @@
     <a routerLink="/" class="home" aria-label="Poll App, back to home">
       <img src="images/Survey_View_Logo.svg" alt="Poll App" />
     </a>
-    <a routerLink="/create" class="btn-primary">Create survey</a>
+    <a routerLink="/create" class="btn-primary">
+      Create survey <img class="icon-hover invert" src="icons/plus.svg" alt="" />
+    </a>
   </header>
   <main class="layout">
     <section class="panel">
@@ -37,8 +39,8 @@
             }
           </div>
           @for (o of q.options; track $index; let oi = $index) {
-          <label class="option">
-            <input type="checkbox" class="checkbox" [checked]="isSelected(qi, oi)" [disabled]="locked()"
+          <label class="option" [class.locked]="locked()">
+            <input type="checkbox" class="checkbox in-option" [checked]="isSelected(qi, oi)" [disabled]="locked()"
               (change)="toggle(qi, oi)" />
             <span><b>{{ letter(oi) }}.</b> {{ o }}</span>
           </label>
